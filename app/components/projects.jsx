@@ -1,100 +1,158 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaFolder } from "react-icons/fa";
 
 export default function PortfolioProjects({ data }) {
-  const items = data?.projects;
-  if (!items || !Array.isArray(items) || items.length === 0) return null;
+  if (!data?.projects?.length) return null;
 
   return (
-    <section id="projects" style={{ background:"#07060a", padding:"8rem 2rem", position:"relative", overflow:"hidden", borderTop:"1px solid rgba(201,168,76,0.06)" }}>
-      <style>{`
-        .gn-proj-card {
-          position:relative; padding:2.5rem;
-          border-top:1px solid rgba(201,168,76,0.12);
-          border-left:1px solid transparent;
-          border-right:1px solid transparent;
-          border-bottom:1px solid rgba(201,168,76,0.06);
-          display:flex; flex-direction:column; height:100%;
-          transition:all 0.35s ease; overflow:hidden; cursor:default;
-        }
-        .gn-proj-card::after {
-          content:'';
-          position:absolute; left:0; top:0; bottom:0; width:1px;
-          background:linear-gradient(180deg, #c9a84c, rgba(201,168,76,0.1), transparent);
-          transform:scaleY(0); transform-origin:top; transition:transform 0.4s ease;
-          pointer-events:none;
-        }
-        .gn-proj-card:hover { background:rgba(201,168,76,0.025); border-top-color:rgba(201,168,76,0.4); box-shadow:0 0 60px rgba(201,168,76,0.06); }
-        .gn-proj-card:hover::after { transform:scaleY(1); }
-        .gn-proj-link { color:rgba(245,238,217,0.3); text-decoration:none; transition:color 0.2s; }
-        .gn-proj-link:hover { color:#c9a84c; }
-        .gn-tech-tag { font-size:10px; font-weight:700; padding:3px 10px; border:1px solid rgba(201,168,76,0.15); color:rgba(201,168,76,0.6); background:rgba(201,168,76,0.03); letter-spacing:0.08em; }
-        .gn-proj-img { width:100%; height:180px; object-fit:cover; display:block; filter:grayscale(20%) contrast(1.05); margin-bottom:1.5rem; }
-      `}</style>
+    <section id="projects" className="relative py-28 px-6 overflow-hidden bg-[#040f1e]">
 
-      <div style={{ position:"absolute", top:"2rem", right:"2rem", fontSize:"220px", fontWeight:900, lineHeight:1, color:"transparent", WebkitTextStrokeWidth:"1px", WebkitTextStrokeColor:"rgba(201,168,76,0.04)", pointerEvents:"none", userSelect:"none" }}>04</div>
+      {/* Ambient depth */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.014)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.014)_1px,transparent_1px)] bg-[size:72px_72px]" />
+      </div>
 
-      <div style={{ maxWidth:"1280px", margin:"0 auto", position:"relative", zIndex:1 }}>
-        <motion.div initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.7 }} style={{ marginBottom:"4rem" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"16px", marginBottom:"1rem" }}>
-            <span style={{ fontSize:"11px", fontWeight:800, letterSpacing:"0.45em", color:"rgba(201,168,76,0.5)", textTransform:"uppercase" }}>04</span>
-            <div style={{ width:"40px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)" }} />
-          </div>
-          <h2 style={{ fontSize:"clamp(2rem, 4vw, 3.5rem)", fontWeight:900, letterSpacing:"-0.04em", color:"#f5eed9", margin:0, textTransform:"uppercase" }}>Projects</h2>
-          <div style={{ width:"60px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)", marginTop:"1rem" }} />
+      <div className="max-w-5xl mx-auto relative z-10">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3 mb-3"
+        >
+          <motion.div
+            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} style={{ width: "32px", originX: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="h-px bg-gradient-to-r from-cyan-400 to-transparent"
+          />
+          <span className="text-[10px] font-bold tracking-[0.35em] uppercase text-cyan-400/80">04 — Projects</span>
         </motion.div>
 
-        {/* Gap-px editorial grid — container is the border color, children are bg */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(340px,1fr))", gap:"1px", background:"rgba(201,168,76,0.06)" }}>
-          {items.map((proj, i) => (
-            <motion.div key={i} initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.5, delay:i*0.07 }}
-              style={{ background:"#07060a", height:"100%" }}>
-              <div className="gn-proj-card">
-                {/* Project image */}
-                {(proj.imageBase64 || proj.image) && (
-                  <img src={proj.imageBase64 || proj.image} alt={proj.title || proj.name} className="gn-proj-img" />
-                )}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="text-4xl sm:text-5xl font-black tracking-tighter text-white mb-4"
+        >
+          What I've Built
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-white/30 text-sm mb-16 max-w-md"
+        >
+          A selection of projects I'm proud of — from concept to deployment.
+        </motion.p>
 
-                {/* Header row */}
-                <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:"1.5rem", gap:"1rem" }}>
-                  {/* Roman numeral index */}
-                  <span style={{ fontSize:"11px", fontWeight:800, letterSpacing:"0.3em", color:"rgba(201,168,76,0.3)" }}>
-                    {["I","II","III","IV","V","VI","VII","VIII","IX","X"][i] || String(i+1).padStart(2,"0")}
-                  </span>
-                  <div style={{ display:"flex", gap:"12px" }}>
-                    {(proj.github || proj.githubUrl || proj.repo) && (
-                      <a href={proj.github || proj.githubUrl || proj.repo} target="_blank" rel="noopener noreferrer" className="gn-proj-link" aria-label="GitHub">
-                        <FaGithub size={16} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {data.projects.map((proj, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.07 }}
+              whileHover={{ y: -6 }}
+              className="group relative bg-white/[0.03] border border-white/[0.07] rounded-2xl overflow-hidden hover:border-cyan-500/30 hover:shadow-[0_20px_60px_rgba(6,182,212,0.1)] transition-all duration-400"
+            >
+              {/* Background hover glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/[0.06] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+
+              {proj.imageBase64 ? (
+                /* Cinematic banner with image */
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src={proj.imageBase64}
+                    alt={proj.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Sonar ring overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#040f1e]" />
+                  <div className="absolute inset-0 bg-[#040f1e]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                  {/* Index watermark */}
+                  <div className="absolute top-3 right-3 text-[10px] font-black text-white/15 tracking-widest">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  {/* Links floating over image */}
+                  <div className="absolute bottom-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                    {proj.github && (
+                      <a
+                        href={proj.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#020c18]/90 border border-white/20 rounded-full text-[10px] font-bold text-white/80 hover:text-white hover:border-cyan-400/50 transition-all backdrop-blur-sm"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <FaGithub className="w-3 h-3" /> Code
                       </a>
                     )}
-                    {(proj.demo || proj.liveUrl || proj.live || proj.url || proj.link) && (
-                      <a href={proj.demo || proj.liveUrl || proj.live || proj.url || proj.link} target="_blank" rel="noopener noreferrer" className="gn-proj-link" aria-label="Live">
-                        <FaExternalLinkAlt size={14} />
+                    {proj.demo && (
+                      <a
+                        href={proj.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/80 border border-cyan-400/40 rounded-full text-[10px] font-bold text-white hover:bg-cyan-400 transition-all backdrop-blur-sm"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <FaExternalLinkAlt className="w-2.5 h-2.5" /> Live
                       </a>
                     )}
                   </div>
                 </div>
+              ) : (
+                /* Elegant no-image header strip */
+                <div className="relative h-20 bg-gradient-to-br from-[#061e34] to-[#041120] border-b border-white/[0.05] flex items-center px-6 overflow-hidden">
+                  <div className="absolute -right-4 -top-4 text-7xl font-black text-white/[0.03] select-none leading-none">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <div className="relative z-10 flex items-center justify-between w-full">
+                    <div className="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center">
+                      <FaFolder className="w-4 h-4 text-cyan-400/70" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {proj.github && (
+                        <a href={proj.github} target="_blank" rel="noopener noreferrer" className="text-white/25 hover:text-white transition-colors">
+                          <FaGithub className="w-4 h-4" />
+                        </a>
+                      )}
+                      {proj.demo && (
+                        <a href={proj.demo} target="_blank" rel="noopener noreferrer" className="text-white/25 hover:text-cyan-400 transition-colors">
+                          <FaExternalLinkAlt className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
 
-                <h3 style={{ fontSize:"18px", fontWeight:900, color:"#f5eed9", margin:"0 0 10px", letterSpacing:"-0.03em", textTransform:"uppercase", lineHeight:1.2 }}>
-                  {proj.title || proj.name || "Untitled"}
+              {/* Card body */}
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-base font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
+                  {proj.title}
                 </h3>
-                <p style={{ fontSize:"13px", color:"rgba(245,238,217,0.45)", lineHeight:1.7, margin:0, flex:1 }}>
+                <p className="text-sm text-white/45 leading-relaxed flex-1">
                   {proj.description}
                 </p>
 
-                {(() => {
-                  const stack = proj.stack || proj.tags || proj.technologies || proj.tech;
-                  if (!Array.isArray(stack) || stack.length === 0) return null;
-                  return (
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:"6px", marginTop:"1.5rem", paddingTop:"1.25rem", borderTop:"1px solid rgba(201,168,76,0.07)" }}>
-                      {stack.map((t, j) => (
-                        <span key={j} className="gn-tech-tag">{t}</span>
-                      ))}
-                    </div>
-                  );
-                })()}
+                {proj.stack?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-5 pt-4 border-t border-white/[0.05]">
+                    {proj.stack.filter(t => t?.trim()).map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-[10px] font-bold text-cyan-400/60 bg-cyan-400/[0.06] border border-cyan-400/10 px-2.5 py-1 rounded-md tracking-wide"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}

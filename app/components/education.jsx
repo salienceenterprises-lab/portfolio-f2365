@@ -1,86 +1,136 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 import { FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function PortfolioEducation({ data }) {
-  const items = data?.education;
-  if (!items || !Array.isArray(items) || items.length === 0) return null;
+  if (!data?.education?.length) return null;
 
   return (
-    <section id="education" style={{ background:"#07060a", padding:"8rem 2rem", position:"relative", overflow:"hidden", borderTop:"1px solid rgba(201,168,76,0.06)" }}>
-      <style>{`
-        .gn-edu-row { display:grid; grid-template-columns:120px 1fr; gap:2rem; padding:2.5rem 0; border-bottom:1px solid rgba(201,168,76,0.07); transition:all 0.3s; position:relative; }
-        .gn-edu-row:last-child { border-bottom:none; }
-        .gn-edu-row::before { content:''; position:absolute; left:0; top:0; width:1px; height:0; background:linear-gradient(180deg, #c9a84c, rgba(201,168,76,0.1)); transition:height 0.4s ease; }
-        .gn-edu-row:hover::before { height:100%; }
-        .gn-edu-row:hover { padding-left:1rem; }
-        @media(max-width:640px) { .gn-edu-row { grid-template-columns:1fr; gap:1rem; } }
-      `}</style>
+    <section id="education" className="relative py-28 px-6 overflow-hidden bg-[#040f1e]">
 
-      <div style={{ position:"absolute", top:"2rem", right:"2rem", fontSize:"220px", fontWeight:900, lineHeight:1, color:"transparent", WebkitTextStrokeWidth:"1px", WebkitTextStrokeColor:"rgba(201,168,76,0.04)", pointerEvents:"none", userSelect:"none" }}>02</div>
-      <div style={{ position:"absolute", bottom:"-80px", right:"-80px", width:"350px", height:"350px", borderRadius:"50%", background:"radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)", pointerEvents:"none" }} />
+      {/* Ambient */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:72px_72px]" />
+      </div>
 
-      <div style={{ maxWidth:"1280px", margin:"0 auto", position:"relative", zIndex:1 }}>
-        <motion.div initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.7 }} style={{ marginBottom:"4rem" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"16px", marginBottom:"1rem" }}>
-            <span style={{ fontSize:"11px", fontWeight:800, letterSpacing:"0.45em", color:"rgba(201,168,76,0.5)", textTransform:"uppercase" }}>02</span>
-            <div style={{ width:"40px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)" }} />
-          </div>
-          <h2 style={{ fontSize:"clamp(2rem, 4vw, 3.5rem)", fontWeight:900, letterSpacing:"-0.04em", color:"#f5eed9", margin:0, textTransform:"uppercase" }}>Education</h2>
-          <div style={{ width:"60px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)", marginTop:"1rem" }} />
+      <div className="max-w-4xl mx-auto relative z-10">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3 mb-3"
+        >
+          <motion.div
+            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} style={{ width: "32px", originX: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="h-px bg-gradient-to-r from-cyan-400 to-transparent"
+          />
+          <span className="text-[10px] font-bold tracking-[0.35em] uppercase text-cyan-400/80">02 — Education</span>
         </motion.div>
 
-        <div>
-          {items.map((edu, i) => (
-            <motion.div key={i} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.5, delay:i * 0.08 }}>
-              <div className="gn-edu-row">
-                {/* Year column */}
-                <div>
-                  <span style={{ fontSize:"11px", fontWeight:800, letterSpacing:"0.2em", color:"rgba(201,168,76,0.6)", display:"block", marginBottom:"4px" }}>
-                    {edu.period || edu.year || edu.graduationYear || edu.years || "—"}
-                  </span>
-                  <span style={{ fontSize:"10px", color:"rgba(245,238,217,0.2)", letterSpacing:"0.1em" }}>Year</span>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="text-4xl sm:text-5xl font-black tracking-tighter text-white mb-4"
+        >
+          Credentials
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-white/30 text-sm mb-16 max-w-md"
+        >
+          Academic foundations and certifications.
+        </motion.p>
+
+        {/* Timeline */}
+        <div className="relative">
+          <motion.div
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.8, ease: "easeInOut" }}
+            className="absolute left-[19px] top-3 w-px bg-gradient-to-b from-cyan-400/40 via-blue-500/15 to-transparent hidden sm:block origin-top"
+          />
+
+          <div className="space-y-7">
+            {data.education.map((edu, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -25 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.5, delay: index * 0.1, type: "spring", stiffness: 100 }}
+                className="relative sm:pl-14"
+              >
+                {/* Timeline dot */}
+                <div className="hidden sm:flex absolute left-0 top-6 w-10 h-10 rounded-full bg-[#040f1e] border border-cyan-400/20 items-center justify-center z-10">
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-400 shadow-[0_0_10px_rgba(96,165,250,0.5)]" />
                 </div>
 
-                {/* Content */}
-                <div>
-                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"0.5rem" }}>
-                    <FaGraduationCap style={{ color:"rgba(201,168,76,0.5)", fontSize:"14px" }} />
-                    <h3 style={{ fontSize:"17px", fontWeight:800, color:"#f5eed9", margin:0, letterSpacing:"-0.02em" }}>
-                      {edu.degree || edu.qualification || edu.field || edu.program}
-                    </h3>
+                <motion.div
+                  whileHover={{ x: 6 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="group"
+                >
+                  <div className="relative bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6 sm:p-7 overflow-hidden hover:border-blue-500/25 hover:bg-white/[0.05] transition-all duration-400">
+
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none rounded-2xl" />
+
+                    {/* Watermark */}
+                    <div className="absolute right-5 top-4 text-5xl font-black text-white/[0.025] select-none leading-none">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3 relative z-10">
+                      <div>
+                        <h3 className="text-lg font-bold text-white group-hover:text-blue-200 transition-colors duration-300">
+                          {edu.degree}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <FaGraduationCap className="w-3.5 h-3.5 text-blue-400/70" />
+                          <span className="text-sm font-semibold text-blue-400/80">{edu.institution}</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-start sm:items-end gap-1.5 flex-shrink-0">
+                        <span className="text-xs font-bold text-white/30 bg-white/[0.05] border border-white/[0.08] px-3 py-1 rounded-full">
+                          {edu.period}
+                        </span>
+                        {edu.location && (
+                          <span className="flex items-center gap-1 text-[11px] text-white/25">
+                            <FaMapMarkerAlt className="w-2.5 h-2.5" /> {edu.location}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {edu.description && (
+                      <p className="text-sm text-white/45 leading-relaxed mb-4 relative z-10">{edu.description}</p>
+                    )}
+
+                    {edu.achievements?.length > 0 && (
+                      <ul className="space-y-2 relative z-10">
+                        {edu.achievements.filter(a => a?.trim()).map((a, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm text-white/40">
+                            <div className="mt-2 w-1 h-1 rounded-full bg-blue-400/60 flex-shrink-0" />
+                            {a}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <p style={{ fontSize:"13px", fontWeight:600, color:"rgba(201,168,76,0.7)", margin:"0 0 8px" }}>
-                    {edu.institution || edu.school || edu.university}
-                  </p>
-                  {(edu.location || edu.city) && (
-                    <p style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"12px", color:"rgba(245,238,217,0.3)", margin:"0 0 8px" }}>
-                      <FaMapMarkerAlt style={{ fontSize:"10px" }} /> {edu.location || edu.city}
-                    </p>
-                  )}
-                  {edu.description && (
-                    <p style={{ fontSize:"13px", color:"rgba(245,238,217,0.4)", lineHeight:1.65, margin:0 }}>{edu.description}</p>
-                  )}
-                  {(edu.gpa || edu.grade || edu.result) && (
-                    <p style={{ fontSize:"11px", color:"rgba(201,168,76,0.5)", marginTop:"8px", fontWeight:600, letterSpacing:"0.1em" }}>
-                      GPA: {edu.gpa || edu.grade || edu.result}
-                    </p>
-                  )}
-                  {Array.isArray(edu.achievements) && edu.achievements.filter(Boolean).length > 0 && (
-                    <ul style={{ listStyle:"none", padding:0, margin:"12px 0 0", display:"flex", flexDirection:"column", gap:"6px" }}>
-                      {edu.achievements.filter(Boolean).map((a, j) => (
-                        <li key={j} style={{ display:"flex", alignItems:"flex-start", gap:"10px", fontSize:"13px", color:"rgba(245,238,217,0.4)", lineHeight:1.65 }}>
-                          <div style={{ width:"5px", height:"5px", background:"rgba(201,168,76,0.6)", transform:"rotate(45deg)", marginTop:"6px", flexShrink:0 }} />
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

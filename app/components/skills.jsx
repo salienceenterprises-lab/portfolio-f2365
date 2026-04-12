@@ -3,77 +3,95 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function PortfolioSkills({ data }) {
-  const skills = data?.skills;
-  if (!skills || !Array.isArray(skills) || skills.length === 0) return null;
-
-  const categories = data?.skillCategories;
-  const hasCategories = categories && typeof categories === "object" && Object.keys(categories).length > 0;
+  if (!data?.skills?.length) return null;
 
   return (
-    <section id="skills" style={{ background:"#07060a", padding:"8rem 2rem", position:"relative", overflow:"hidden", borderTop:"1px solid rgba(201,168,76,0.06)" }}>
-      <style>{`
-        .gn-skill-pill {
-          display:inline-flex; align-items:center; gap:8px;
-          padding:9px 20px;
-          border:1px solid rgba(201,168,76,0.14);
-          color:rgba(245,238,217,0.55);
-          font-size:12px; font-weight:600; letter-spacing:0.08em;
-          background:rgba(201,168,76,0.02);
-          transition:all 0.25s ease; cursor:default;
-          clip-path:polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-        }
-        .gn-skill-pill::before { content:''; width:5px; height:5px; background:rgba(201,168,76,0.35); flex-shrink:0; transform:rotate(45deg); transition:background 0.2s; }
-        .gn-skill-pill:hover { border-color:rgba(201,168,76,0.4); color:#c9a84c; background:rgba(201,168,76,0.07); }
-        .gn-skill-pill:hover::before { background:#c9a84c; }
-        .gn-cat-row { padding:2rem 0; border-bottom:1px solid rgba(201,168,76,0.07); }
-        .gn-cat-row:last-child { border-bottom:none; }
-      `}</style>
+    <section id="skills" className="relative py-28 px-6 overflow-hidden bg-[#020c18]">
 
-      <div style={{ position:"absolute", top:"2rem", right:"2rem", fontSize:"220px", fontWeight:900, lineHeight:1, color:"transparent", WebkitTextStrokeWidth:"1px", WebkitTextStrokeColor:"rgba(201,168,76,0.04)", pointerEvents:"none", userSelect:"none" }}>05</div>
+      {/* Ambient */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:72px_72px]" />
+      </div>
 
-      <div style={{ maxWidth:"1280px", margin:"0 auto", position:"relative", zIndex:1 }}>
-        <motion.div initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.7 }} style={{ marginBottom:"4rem" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"16px", marginBottom:"1rem" }}>
-            <span style={{ fontSize:"11px", fontWeight:800, letterSpacing:"0.45em", color:"rgba(201,168,76,0.5)", textTransform:"uppercase" }}>05</span>
-            <div style={{ width:"40px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)" }} />
-          </div>
-          <h2 style={{ fontSize:"clamp(2rem, 4vw, 3.5rem)", fontWeight:900, letterSpacing:"-0.04em", color:"#f5eed9", margin:0, textTransform:"uppercase" }}>Skills</h2>
-          <div style={{ width:"60px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)", marginTop:"1rem" }} />
+      <div className="max-w-5xl mx-auto relative z-10">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3 mb-3"
+        >
+          <motion.div
+            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} style={{ width: "32px", originX: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="h-px bg-gradient-to-r from-cyan-400 to-transparent"
+          />
+          <span className="text-[10px] font-bold tracking-[0.35em] uppercase text-cyan-400/80">05 — Skills</span>
         </motion.div>
 
-        {hasCategories ? (
-          <div>
-            {Object.entries(categories).map(([cat, catSkills], ci) => (
-              <motion.div key={cat} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.5, delay:ci*0.07 }}
-                className="gn-cat-row">
-                <div style={{ display:"grid", gridTemplateColumns:"180px 1fr", gap:"2rem", alignItems:"start" }}>
-                  <div>
-                    <span style={{ fontSize:"10px", fontWeight:800, letterSpacing:"0.35em", color:"rgba(201,168,76,0.5)", textTransform:"uppercase" }}>{cat}</span>
-                    <div style={{ width:"24px", height:"1px", background:"linear-gradient(90deg, #c9a84c, transparent)", marginTop:"8px" }} />
-                  </div>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:"8px" }}>
-                    {(Array.isArray(catSkills) ? catSkills : []).map((skill, i) => (
-                      <span key={i} className="gn-skill-pill">{skill}</span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
-            {/* Full-width gold divider */}
-            <div style={{ height:"1px", background:"linear-gradient(90deg, transparent, rgba(201,168,76,0.3), rgba(201,168,76,0.1), transparent)", marginBottom:"3rem" }} />
-            <div style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-              {skills.map((skill, i) => (
-                <span key={i} className="gn-skill-pill"
-                  style={{ fontSize: i % 7 === 0 ? "13px" : "11px" }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="text-4xl sm:text-5xl font-black tracking-tighter text-white mb-4"
+        >
+          Tech Stack
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-white/30 text-sm mb-16 max-w-md"
+        >
+          Technologies I've mastered and weaponised.
+        </motion.p>
+
+        {/* Skill grid — hexagonal-feel cells */}
+        <motion.div
+          className="flex flex-wrap gap-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035 } } }}
+        >
+          {data.skills.map((skill, index) => (
+            <motion.div
+              key={`${skill}-${index}`}
+              variants={{
+                hidden: { opacity: 0, scale: 0.6, y: 20 },
+                visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 20 } },
+              }}
+              className="group relative cursor-default"
+            >
+              <div className="relative flex items-center gap-2.5 px-5 py-3 bg-white/[0.04] border border-white/[0.08] rounded-xl group-hover:bg-cyan-400/[0.08] group-hover:border-cyan-400/40 transition-all duration-300">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 group-hover:bg-cyan-300 flex-shrink-0 transition-colors duration-300" />
+                <span className="text-sm font-semibold text-white/55 group-hover:text-white transition-colors duration-300 tracking-wide">
                   {skill}
                 </span>
-              ))}
-            </div>
-          </motion.div>
-        )}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Count indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-14 flex items-center gap-4"
+        >
+          <div className="h-px flex-1 bg-gradient-to-r from-white/[0.06] to-transparent" />
+          <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/20">
+            {data.skills.length} Technologies
+          </span>
+          <div className="h-px flex-1 bg-gradient-to-l from-white/[0.06] to-transparent" />
+        </motion.div>
       </div>
     </section>
   );
